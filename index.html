@@ -1,13 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokedex</title>
 </head>
-<body>
-    
+
+<body onload="pokemonContainerRender()">
+    <header>Pokedex</header>
+    <main>
+        <input type="text" value="Enter the name of a Pokémon">
+        <div class="content">
+            <div id="pokemon-containers" class="pokemon-containers">
+            </div>
+            <div id="pokemon-container-details" class="pokemon-container-details"></div>
+        </div>
+    </main>
+
+    <footer></footer>
 </body>
 <script src="./script.js"></script>
+
 </html>

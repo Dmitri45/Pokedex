@@ -1,0 +1,166 @@
+body{
+    background-color: #FDFDFF;
+    font-family: "Rubik", sans-serif;
+}
+
+h4{
+    color:  #3E4A5A;
+    margin: 0px;
+    font-size: 18px;
+}
+
+header{
+    font-size: 48px;
+    color:  #3E4A5A;
+    padding-left: 160px;
+    padding-top: 48px;
+}
+
+main{
+    padding-left: 160px;
+    padding-right: 160px;
+    margin-top: 24px;
+}
+
+main input{
+    height: 48px;
+    width: 90%;
+    border: 1px solid  #AEB9C8;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    color: #AEB9C8;
+    font-size: 24px;
+    margin-bottom: 48px;
+}
+
+.content{
+    display: flex;
+    justify-content: space-between;
+}
+
+.pokemon-container{
+    flex:1;
+    width: 224px;
+    height: auto;
+    border: 1.5px solid  #AEB9C8;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pokemon-container img{
+    height: 188px;
+}
+
+.pokemon-container-button{
+    margin-top: 12px;
+    margin-bottom: 16px;
+    height: 38px;
+    width: 80%;
+    color: #3D77C3;
+    font-size: 16px;
+    background-color: #cee3ff;
+    border: 0px;
+    border-radius: 10px;
+}
+
+.pokemon-container-button:hover{
+    background-color:#98c2f8;
+    cursor: pointer;
+}
+
+.pokemon-container span{
+    margin-top: 8px;
+    color: #AEB9C8;;
+    font-size: 16px;
+}
+
+.pokemon-container-details{
+    width: 480px;
+    height: auto;
+    border: 1.5px solid  #AEB9C8;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pokemon-container-details img{
+    width: 224px;
+}
+
+.pokemon-container-details span{
+    margin-top: 8px;
+    color: #AEB9C8;;
+    font-size: 16px;
+}
+
+.tab-bar{
+    margin-top: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 32px;
+    width: 80%;
+}
+
+.tab-active{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 28px;
+    color: #3D77C3 !important;
+    background-color: #cee3ff;
+    border: 0px;
+    border-radius: 10px;
+}
+
+.tab{
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.tab:hover{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 28px;
+    color: #3D77C3 !important;
+    background-color: #cee3ff;
+    border: 0px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.information{
+    width: 80%;
+    margin-bottom: 16px;
+}
+
+.main-information{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px;
+}
+
+.progress{
+    width: 128px;
+    height: 8px;
+    border: 1px solid #3D77C3;
+    border-radius: 16px;
+    margin-top: 12px;
+}
+
+.progress-bar{
+    height: 100%;
+    background-color:#3D77C3;
+}
+
+
