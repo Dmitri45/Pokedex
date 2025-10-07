@@ -1,18 +1,8 @@
-const BASE_URL = 'https://pokeapi.co/api/v2/pokemon/1/';
+const BASE_URL = 'https://pokeapi.co/api/v2/pokemon?limit=40&offset=0';
 let myObject = null;
-async function fetchData() {
-    if (myObject) {
-        return myObject;
-    }
 
-    try {
-        const response = await fetch(BASE_URL);
-        myObject = await response.json();
-        return myObject;
-    } catch (error) {
-        console.error('Fehler', error);
-        return null;
-    }
+async function init(){
+    await pokemonContanersRender(BASE_URL);
 }
 
 async function findByUrl(url) {
@@ -25,16 +15,22 @@ async function findByUrl(url) {
     }
 }
 
-async function pokemonContainerRender() {
-    console.log(myObject);
-    await fetchData();
-    console.log(myObject);
+async function pokemonContanersRender(url){
+    let pokemonData = await findByUrl(url);
+    for (let index = 0; index < pokemonData.results.length; index++) {
+        let objectOfPokemon = await findByUrl(pokemonData.results[index].url);
+        console.log(objectOfPokemon);
+        pokemonContainerRender(objectOfPokemon);    
+    }
+}
+
+ function pokemonContainerRender(objectOfPokemon) {
     let pokemonContainersRef = document.getElementById('pokemon-containers');
     pokemonContainersRef.innerHTML += ` 
         <div class="pokemon-container">
-        <img src="${myObject.sprites.other['official-artwork'].front_default}" alt="">
-        <h4>${myObject.name[0].toUpperCase() + myObject.name.slice(1)}</h4>
-        <span>${getPokemonType(myObject)}</span>
+        <img src="${objectOfPokemon.sprites.other['official-artwork'].front_default}" alt="">
+        <h4>${objectOfPokemon.name[0].toUpperCase() + objectOfPokemon.name.slice(1)}</h4>
+        <span>${getPokemonType(objectOfPokemon)}</span>
         <button onclick="pokemonContainerDetaislRender()" class="pokemon-container-button">Learn more</button>
         <div></div>
     </div>`;
@@ -49,7 +45,6 @@ function getPokemonType(myObject) {
 }
 
 async function pokemonContainerDetaislRender() {
-    await fetchData();
     let pokemonContainerDetais = document.getElementById('pokemon-container-details');
     if(pokemonContainerDetais.innerHTML == ""){
     pokemonContainerDetais.innerHTML += ` 
