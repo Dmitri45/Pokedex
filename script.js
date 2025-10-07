@@ -19,19 +19,18 @@ async function pokemonContanersRender(url){
     let pokemonData = await findByUrl(url);
     for (let index = 0; index < pokemonData.results.length; index++) {
         let objectOfPokemon = await findByUrl(pokemonData.results[index].url);
-        console.log(objectOfPokemon);
-        pokemonContainerRender(objectOfPokemon);    
+        pokemonContainerRender(objectOfPokemon, pokemonData.results[index].url);    
     }
 }
 
- function pokemonContainerRender(objectOfPokemon) {
+ function pokemonContainerRender(objectOfPokemon, urlOfPokemon) {
     let pokemonContainersRef = document.getElementById('pokemon-containers');
     pokemonContainersRef.innerHTML += ` 
         <div class="pokemon-container">
         <img src="${objectOfPokemon.sprites.other['official-artwork'].front_default}" alt="">
         <h4>${objectOfPokemon.name[0].toUpperCase() + objectOfPokemon.name.slice(1)}</h4>
         <span>${getPokemonType(objectOfPokemon)}</span>
-        <button onclick="pokemonContainerDetaislRender()" class="pokemon-container-button">Learn more</button>
+        <button onclick="pokemonContainerDetailsRender('${urlOfPokemon}')" class="pokemon-container-button">Learn more</button>
         <div></div>
     </div>`;
 }
@@ -44,10 +43,10 @@ function getPokemonType(myObject) {
     return pokemonTypeList.join('/');
 }
 
-async function pokemonContainerDetaislRender() {
+async function pokemonContainerDetailsRender(url) {
+    await setSelectedPokemon(url);
     let pokemonContainerDetais = document.getElementById('pokemon-container-details');
-    if(pokemonContainerDetais.innerHTML == ""){
-    pokemonContainerDetais.innerHTML += ` 
+    pokemonContainerDetais.innerHTML = ` 
         <img src="${myObject.sprites.other['official-artwork'].front_default}" alt="">
         <h4>${myObject.name[0].toUpperCase() + myObject.name.slice(1)}</h4>
         <span>${getPokemonType(myObject)}</span>
@@ -56,14 +55,17 @@ async function pokemonContainerDetaislRender() {
             <span id="stats" class="tab" onclick="tabChange('stats')">Stats</span>
             <span id="evo-chain" class="tab" onclick="tabChange('evo-chain')">Evo Chain</span>
         </div>
+        <div class="information-wrap">
         <div id="information" class="information">
         </div>
-        <button class="pokemon-container-button">Close</button>
+        </div>
+        <button onclick="closePokemondetails()" class="pokemon-container-button">Close</button>
         <div></div>
     </div>`;
     pokemonMainInformationRender();
+    showPokemonDetail();
 }
-}
+
 
 function getPokemonAbilities(myObject) {
     let pokemonAbilitiesList = [];
@@ -109,7 +111,7 @@ function pokemonMainInformationRender(){
             </div>
             <div class="main-information">
                 <span>Abilities</span><span>${getPokemonAbilities(myObject)}</span>
-            </div>`
+            </div>`;
 }
 
 function pokemonStatsRender(){
@@ -151,4 +153,16 @@ async function getPokemonImageUrlByName(nameOfPokemon){
     let objectOfPokemon = await findByUrl(urlOfPokemon);
     console.log(objectOfPokemon.sprites.other['official-artwork'].front_default);
     return objectOfPokemon.sprites.other['official-artwork'].front_default;
+}
+
+async function setSelectedPokemon(url){
+    myObject = await findByUrl(url);
+}
+
+function showPokemonDetail(){
+    document.getElementById('pokemon-container-details').style = '';
+}
+
+function closePokemondetails(){
+    document.getElementById('pokemon-container-details').style.display = 'none';
 }

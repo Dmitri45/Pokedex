@@ -87,8 +87,8 @@ main input{
 }
 
 .pokemon-container-details{
-    width: 480px;
-    height: auto;
+    min-width: 420px;
+    height: 600px;
     border: 1.5px solid  #AEB9C8;
     border-radius: 8px;
     background-color: #FFFFFF;
@@ -146,9 +146,16 @@ main input{
     cursor: pointer;
 }
 
-.information{
+.information-wrap{
+    flex: 1;
+    display: flex;
+    align-items: center;
     width: 80%;
     margin-bottom: 16px;
+}
+
+.information{
+    width: 100%;
 }
 
 .main-information{
