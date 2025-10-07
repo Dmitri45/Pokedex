@@ -15,6 +15,16 @@ async function fetchData() {
     }
 }
 
+async function findByUrl(url) {
+    try {
+        const response = await fetch(url);
+        return await response.json();;
+    } catch (error) {
+        console.error('Fehler', error);
+        return null;
+    }
+}
+
 async function pokemonContainerRender() {
     console.log(myObject);
     await fetchData();
@@ -40,8 +50,9 @@ function getPokemonType(myObject) {
 
 async function pokemonContainerDetaislRender() {
     await fetchData();
-    let pokemonContainersRef = document.getElementById('pokemon-container-details');
-    pokemonContainersRef.innerHTML += ` 
+    let pokemonContainerDetais = document.getElementById('pokemon-container-details');
+    if(pokemonContainerDetais.innerHTML == ""){
+    pokemonContainerDetais.innerHTML += ` 
         <img src="${myObject.sprites.other['official-artwork'].front_default}" alt="">
         <h4>${myObject.name[0].toUpperCase() + myObject.name.slice(1)}</h4>
         <span>${getPokemonType(myObject)}</span>
@@ -51,22 +62,12 @@ async function pokemonContainerDetaislRender() {
             <span id="evo-chain" class="tab" onclick="tabChange('evo-chain')">Evo Chain</span>
         </div>
         <div id="information" class="information">
-            <div class="main-information">
-                <span>Height</span><span>${myObject.height}</span>
-            </div>
-            <div class="main-information">
-                <span>Weight</span><span>${myObject.weight}</span>
-            </div>
-            <div class="main-information">
-                <span>Base esperience</span><span>${myObject.base_experience}</span>
-            </div>
-            <div class="main-information">
-                <span>Abilities</span><span>${getPokemonAbilities(myObject)}</span>
-            </div>
         </div>
         <button class="pokemon-container-button">Close</button>
         <div></div>
     </div>`;
+    pokemonMainInformationRender();
+}
 }
 
 function getPokemonAbilities(myObject) {
@@ -81,12 +82,39 @@ function tabChange(id){
     resetTabs();
     document.getElementById(id).classList.add('tab-active');
     document.getElementById('information').innerHTML = '';
+    if(id == 'main'){
+        pokemonMainInformationRender();
+    }
+    else if(id == 'stats'){
+        pokemonStatsRender();
+    }
+    else{
+        pokemonEvoChainRender();
+    }
+
 } 
 
 function resetTabs(){
     document.getElementById(`main`).classList.remove('tab-active');
     document.getElementById(`stats`).classList.remove('tab-active');
     document.getElementById(`evo-chain`).classList.remove('tab-active');
+}
+
+function pokemonMainInformationRender(){
+    document.getElementById('information').innerHTML = '';
+    document.getElementById('information').innerHTML = 
+            `<div class="main-information">
+            <span>Height</span><span>${myObject.height}</span>
+            </div>
+            <div class="main-information">
+                <span>Weight</span><span>${myObject.weight}</span>
+            </div>
+            <div class="main-information">
+                <span>Base esperience</span><span>${myObject.base_experience}</span>
+            </div>
+            <div class="main-information">
+                <span>Abilities</span><span>${getPokemonAbilities(myObject)}</span>
+            </div>`
 }
 
 function pokemonStatsRender(){
@@ -103,6 +131,29 @@ function pokemonStatsRender(){
      }
 }
 
-function evoChainRender(){
-    
+async function pokemonEvoChainRender(){
+    let speciesObject = await findByUrl(myObject.species.url);
+    let evolutionChainObject = await findByUrl(speciesObject.evolution_chain.url);
+    document.getElementById('information').innerHTML = '';
+    document.getElementById('information').innerHTML = `
+    <div class="evolution_chain_container">
+    <img src="${await getPokemonImageUrlByName(evolutionChainObject.chain.species.name)}">
+    <img src="${await getPokemonImageUrlByName(evolutionChainObject.chain.evolves_to[0].species.name)}">
+    <img src="${await getPokemonImageUrlByName(evolutionChainObject.chain.evolves_to[0].evolves_to[0].species.name)}">
+</div>`;
+
+}
+
+async function getPokemonImageUrlByName(nameOfPokemon){
+    let pokemonData = await findByUrl('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0');
+    let urlOfPokemon = '';
+    for (let index = 0; index < pokemonData.results.length; index++) {
+        if(pokemonData.results[index].name == nameOfPokemon){
+            urlOfPokemon = pokemonData.results[index].url;
+            break;
+        } 
+    }
+    let objectOfPokemon = await findByUrl(urlOfPokemon);
+    console.log(objectOfPokemon.sprites.other['official-artwork'].front_default);
+    return objectOfPokemon.sprites.other['official-artwork'].front_default;
 }

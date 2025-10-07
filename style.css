@@ -163,4 +163,13 @@ main input{
     background-color:#3D77C3;
 }
 
+.evolution_chain_container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
+.evolution_chain_container img{
+    height: 80px;
+    width: 80px;
+}
