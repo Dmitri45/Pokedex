@@ -1,7 +1,11 @@
-const BASE_URL = 'https://pokeapi.co/api/v2/pokemon?limit=40&offset=0';
+const BASE_URL = 'https://pokeapi.co/api/v2/pokemon?limit=100&offset=0';
 let myObject = null;
+let arrowHtml = `<svg class="arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" 
+stroke="currentColor" class="size-6">
+<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+</svg>`;
 
-async function init(){
+async function init() {
     await pokemonContanersRender(BASE_URL);
 }
 
@@ -15,15 +19,15 @@ async function findByUrl(url) {
     }
 }
 
-async function pokemonContanersRender(url){
+async function pokemonContanersRender(url) {
     let pokemonData = await findByUrl(url);
     for (let index = 0; index < pokemonData.results.length; index++) {
         let objectOfPokemon = await findByUrl(pokemonData.results[index].url);
-        pokemonContainerRender(objectOfPokemon, pokemonData.results[index].url);    
+        pokemonContainerRender(objectOfPokemon, pokemonData.results[index].url);
     }
 }
 
- function pokemonContainerRender(objectOfPokemon, urlOfPokemon) {
+function pokemonContainerRender(objectOfPokemon, urlOfPokemon) {
     let pokemonContainersRef = document.getElementById('pokemon-containers');
     pokemonContainersRef.innerHTML += ` 
         <div class="pokemon-container">
@@ -75,32 +79,32 @@ function getPokemonAbilities(myObject) {
     return pokemonAbilitiesList.join(', ');
 }
 
-function tabChange(id){
+function tabChange(id) {
     resetTabs();
     document.getElementById(id).classList.add('tab-active');
     document.getElementById('information').innerHTML = '';
-    if(id == 'main'){
+    if (id == 'main') {
         pokemonMainInformationRender();
     }
-    else if(id == 'stats'){
+    else if (id == 'stats') {
         pokemonStatsRender();
     }
-    else{
+    else {
         pokemonEvoChainRender();
     }
 
-} 
+}
 
-function resetTabs(){
+function resetTabs() {
     document.getElementById(`main`).classList.remove('tab-active');
     document.getElementById(`stats`).classList.remove('tab-active');
     document.getElementById(`evo-chain`).classList.remove('tab-active');
 }
 
-function pokemonMainInformationRender(){
+function pokemonMainInformationRender() {
     document.getElementById('information').innerHTML = '';
-    document.getElementById('information').innerHTML = 
-            `<div class="main-information">
+    document.getElementById('information').innerHTML =
+        `<div class="main-information">
             <span>Height</span><span>${myObject.height}</span>
             </div>
             <div class="main-information">
@@ -114,55 +118,78 @@ function pokemonMainInformationRender(){
             </div>`;
 }
 
-function pokemonStatsRender(){
-     document.getElementById('information').innerHTML = '';
-     for (let index = 0; index < myObject.stats.length; index++) {
+function pokemonStatsRender() {
+    document.getElementById('information').innerHTML = '';
+    for (let index = 0; index < myObject.stats.length; index++) {
         document.getElementById('information').innerHTML += `
         <div class="main-information">
-        <span>${myObject.stats[index].stat.name[0].toUpperCase()+ myObject.stats[index].stat.name.slice(1)}</span>
+        <span>${myObject.stats[index].stat.name[0].toUpperCase() + myObject.stats[index].stat.name.slice(1)}</span>
         <div class="progress">
-            <div class="progress-bar" style="width:${myObject.stats[index].base_stat}%"></div>
+            <div class="progress-bar" style="width:${myObject.stats[index].base_stat}%">
+            ${myObject.stats[index].base_stat}</div>
         </div>
     </div>`;
-        
-     }
+
+    }
 }
 
-async function pokemonEvoChainRender(){
+async function pokemonEvoChainRender() {
     let speciesObject = await findByUrl(myObject.species.url);
     let evolutionChainObject = await findByUrl(speciesObject.evolution_chain.url);
+    let pokemonImageUrlsList = await getPokemonImageUrls(evolutionChainObject);
     document.getElementById('information').innerHTML = '';
-    document.getElementById('information').innerHTML = `
-    <div class="evolution_chain_container">
-    <img src="${await getPokemonImageUrlByName(evolutionChainObject.chain.species.name)}">
-    <img src="${await getPokemonImageUrlByName(evolutionChainObject.chain.evolves_to[0].species.name)}">
-    <img src="${await getPokemonImageUrlByName(evolutionChainObject.chain.evolves_to[0].evolves_to[0].species.name)}">
-</div>`;
-
+    document.getElementById('information').innerHTML = `<div id="evolution_chain_container" class="evolution_chain_container"></div>`;
+    for (let index = 0; index < pokemonImageUrlsList.length; index++) {
+        if (pokemonImageUrlsList[index] == arrowHtml) {
+            document.getElementById('evolution_chain_container').innerHTML += `
+        ${pokemonImageUrlsList[index]}`;
+        }
+        else {
+            document.getElementById('evolution_chain_container').innerHTML += `
+        <img src="${pokemonImageUrlsList[index]}">`;
+        }
+    }
 }
 
-async function getPokemonImageUrlByName(nameOfPokemon){
+async function getPokemonImageUrls(evolutionChainObject) {
+    let myList = [];
+    myList.push(await getPokemonImageUrlByName(evolutionChainObject.chain.species.name));
+    myList.push(arrowHtml);
+    myList.push(await getPokemonImageUrlByName(evolutionChainObject.chain.evolves_to[0].species.name));
+    if (evolutionChainObject?.chain?.evolves_to?.[0]?.evolves_to?.[0]?.species?.name) {
+        myList.push(arrowHtml);
+        myList.push(await getPokemonImageUrlByName(evolutionChainObject.chain.evolves_to[0].evolves_to[0].species.name));
+    }
+    return myList;
+}
+
+async function getPokemonImageUrlByName(nameOfPokemon) {
     let pokemonData = await findByUrl('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0');
     let urlOfPokemon = '';
     for (let index = 0; index < pokemonData.results.length; index++) {
-        if(pokemonData.results[index].name == nameOfPokemon){
+        if (pokemonData.results[index].name == nameOfPokemon) {
             urlOfPokemon = pokemonData.results[index].url;
             break;
-        } 
+        }
     }
     let objectOfPokemon = await findByUrl(urlOfPokemon);
-    console.log(objectOfPokemon.sprites.other['official-artwork'].front_default);
     return objectOfPokemon.sprites.other['official-artwork'].front_default;
 }
 
-async function setSelectedPokemon(url){
+async function setSelectedPokemon(url) {
     myObject = await findByUrl(url);
 }
 
-function showPokemonDetail(){
+function showPokemonDetail() {
     document.getElementById('pokemon-container-details').style = '';
 }
 
-function closePokemondetails(){
+function closePokemondetails() {
     document.getElementById('pokemon-container-details').style.display = 'none';
 }
+
+// TODO:
+// - Исправить логику отображения эволюции (иногда ошибка)
+// - Сделать контейнер деталей фиксированным при прокрутке
+// - Добавить поиск по имени покемона
+// - Подправить дизайн карточки деталей

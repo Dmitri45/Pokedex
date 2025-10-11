@@ -171,11 +171,16 @@ main input{
     border: 1px solid #3D77C3;
     border-radius: 16px;
     margin-top: 12px;
+    
 }
 
 .progress-bar{
     height: 100%;
+    max-width: 100%;
     background-color:#3D77C3;
+    color: #cee3ff;
+    text-align: center;
+    font-size: 8px;
 }
 
 .evolution_chain_container{
@@ -185,6 +190,11 @@ main input{
 }
 
 .evolution_chain_container img{
-    height: 80px;
-    width: 80px;
+    min-height: 80px;
+    min-width: 80px;
+}
+
+.arrow{
+    color:#cee3ff;
+    height: 72px;
 }
