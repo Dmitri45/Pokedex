@@ -86,9 +86,17 @@ main input{
     font-size: 16px;
 }
 
-.pokemon-container-details{
+.pokemon-container-details-wrapper{
+    flex-grow: 1;
     min-width: 420px;
+}
+
+
+.pokemon-container-details{
+    position: sticky;
+    top: 10px;
     height: 600px;
+    width: 100%;
     border: 1.5px solid  #AEB9C8;
     border-radius: 8px;
     background-color: #FFFFFF;

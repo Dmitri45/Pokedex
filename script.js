@@ -181,11 +181,11 @@ async function setSelectedPokemon(url) {
 }
 
 function showPokemonDetail() {
-    document.getElementById('pokemon-container-details').style = '';
+    document.getElementById('pokemon-container-details').parentElement.style = '';
 }
 
 function closePokemondetails() {
-    document.getElementById('pokemon-container-details').style.display = 'none';
+    document.getElementById('pokemon-container-details').parentElement.style.display = 'none';
 }
 
 // TODO:
