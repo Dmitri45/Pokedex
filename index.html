@@ -15,13 +15,16 @@
 <body onload="init()">
     <header>Pokedex</header>
     <main>
-        <input type="text" value="Enter the name of a Pokémon">
+        <input id="search" type="text" value="Enter the name of a Pokémon">
         <div class="content">
             <div id="pokemon-containers" class="pokemon-containers">
             </div>
             <div class="pokemon-container-details-wrapper" style="display: none;">
-            <div id="pokemon-container-details" class="pokemon-container-details"></div>
+                <div id="pokemon-container-details" class="pokemon-container-details"></div>
+            </div>
         </div>
+        <div class="load-more-button-container" onclick="loadMorePokemon ()">
+            <button class="load-more-button">Load more</button>
         </div>
     </main>
 

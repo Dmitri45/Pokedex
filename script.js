@@ -1,4 +1,5 @@
-const BASE_URL = 'https://pokeapi.co/api/v2/pokemon?limit=100&offset=0';
+let loadedPokemonCount = 40;
+const BASE_URL = `https://pokeapi.co/api/v2/pokemon?limit=${loadedPokemonCount}&offset=0`;
 let myObject = null;
 let arrowHtml = `<svg class="arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" 
 stroke="currentColor" class="size-6">
@@ -188,8 +189,11 @@ function closePokemondetails() {
     document.getElementById('pokemon-container-details').parentElement.style.display = 'none';
 }
 
+function loadMorePokemon (){
+    let start = loadedPokemonCount;
+    loadedPokemonCount += 40;
+    pokemonContanersRender(`https://pokeapi.co/api/v2/pokemon?limit=${loadedPokemonCount}&offset=${start}`);
+}
+
 // TODO:
-// - Исправить логику отображения эволюции (иногда ошибка)
-// - Сделать контейнер деталей фиксированным при прокрутке
 // - Добавить поиск по имени покемона
-// - Подправить дизайн карточки деталей

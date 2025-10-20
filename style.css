@@ -206,3 +206,26 @@ main input{
     color:#cee3ff;
     height: 72px;
 }
+
+.load-more-button-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.load-more-button{
+    margin-top: 12px;
+    margin-bottom: 16px;
+    height: 38px;
+    width: 200px;
+    color: #3D77C3;
+    font-size: 16px;
+    background-color: #cee3ff;
+    border: 0px;
+    border-radius: 10px;
+}
+
+.load-more-button:hover{
+    background-color:#98c2f8;
+    cursor: pointer;
+}
