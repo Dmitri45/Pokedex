@@ -8,6 +8,7 @@ stroke="currentColor" class="size-6">
 
 async function init() {
     await pokemonContanersRender(BASE_URL);
+    setupFocusHandlers();
 }
 
 async function findByUrl(url) {
@@ -189,11 +190,27 @@ function closePokemondetails() {
     document.getElementById('pokemon-container-details').parentElement.style.display = 'none';
 }
 
-function loadMorePokemon (){
+function loadMorePokemon() {
     let start = loadedPokemonCount;
     loadedPokemonCount += 40;
     pokemonContanersRender(`https://pokeapi.co/api/v2/pokemon?limit=${loadedPokemonCount}&offset=${start}`);
 }
+
+function setupFocusHandlers() {
+    let searchInput = document.getElementById('search');
+    searchInput.addEventListener('focus', onFocus);
+    searchInput.addEventListener('blur', onBlur);
+}
+
+function onFocus() {
+    document.getElementById('search').value = "";
+}
+
+function onBlur() {
+    document.getElementById('search').value = "Enter the name of a Pokémon";
+}
+
+
 
 // TODO:
 // - Добавить поиск по имени покемона
