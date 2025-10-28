@@ -5,10 +5,21 @@ let arrowHtml = `<svg class="arrow" xmlns="http://www.w3.org/2000/svg" fill="non
 stroke="currentColor" class="size-6">
 <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
 </svg>`;
+let pokemonsList = [];
+let filteredData = [];
+let wasSearching = false;
+
 
 async function init() {
-    await pokemonContanersRender(BASE_URL);
+    await loadPokemons();
+    await pokemonContanersRender(pokemonsList, loadedPokemonCount);
     setupFocusHandlers();
+
+}
+
+async function loadPokemons() {
+    let pokemonData = await findByUrl('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0');
+    pokemonsList = pokemonData.results;
 }
 
 async function findByUrl(url) {
@@ -21,17 +32,18 @@ async function findByUrl(url) {
     }
 }
 
-async function pokemonContanersRender(url) {
-    let pokemonData = await findByUrl(url);
-    for (let index = 0; index < pokemonData.results.length; index++) {
-        let objectOfPokemon = await findByUrl(pokemonData.results[index].url);
-        pokemonContainerRender(objectOfPokemon, pokemonData.results[index].url);
+async function pokemonContanersRender(listOfPokomens, quantity = listOfPokomens.length, start = 0) {
+    for (let index = start; index < quantity; index++) {
+        let objectOfPokemon = await findByUrl(listOfPokomens[index].url);
+        pokemonContainerRender(objectOfPokemon, listOfPokomens[index].url);
+        console.log(listOfPokomens[index].name);
     }
 }
 
 function pokemonContainerRender(objectOfPokemon, urlOfPokemon) {
     let pokemonContainersRef = document.getElementById('pokemon-containers');
-    pokemonContainersRef.innerHTML += ` 
+    if (objectOfPokemon.sprites.other['official-artwork'].front_default) {
+        pokemonContainersRef.innerHTML += ` 
         <div class="pokemon-container">
         <img src="${objectOfPokemon.sprites.other['official-artwork'].front_default}" alt="">
         <h4>${objectOfPokemon.name[0].toUpperCase() + objectOfPokemon.name.slice(1)}</h4>
@@ -39,6 +51,18 @@ function pokemonContainerRender(objectOfPokemon, urlOfPokemon) {
         <button onclick="pokemonContainerDetailsRender('${urlOfPokemon}')" class="pokemon-container-button">Learn more</button>
         <div></div>
     </div>`;
+    }
+    else {
+        pokemonContainersRef.innerHTML += ` 
+    <div class="pokemon-container">
+    <img src="./img/no_image.png" alt="">
+    <h4>${objectOfPokemon.name[0].toUpperCase() + objectOfPokemon.name.slice(1)}</h4>
+    <span>${getPokemonType(objectOfPokemon)}</span>
+    <button onclick="pokemonContainerDetailsRender('${urlOfPokemon}')" class="pokemon-container-button">Learn more</button>
+    <div></div>
+</div>`;
+    }
+
 }
 
 function getPokemonType(myObject) {
@@ -193,24 +217,52 @@ function closePokemondetails() {
 function loadMorePokemon() {
     let start = loadedPokemonCount;
     loadedPokemonCount += 40;
-    pokemonContanersRender(`https://pokeapi.co/api/v2/pokemon?limit=${loadedPokemonCount}&offset=${start}`);
+    pokemonContanersRender(pokemonsList, loadedPokemonCount, start);
 }
 
 function setupFocusHandlers() {
     let searchInput = document.getElementById('search');
     searchInput.addEventListener('focus', onFocus);
     searchInput.addEventListener('blur', onBlur);
+    searchInput.addEventListener('input', filterAndShowName);
 }
 
 function onFocus() {
-    document.getElementById('search').value = "";
+    if (document.getElementById('search').value == 'Enter the name of a Pokémon') {
+        document.getElementById('search').value = "";
+    }
 }
 
 function onBlur() {
-    document.getElementById('search').value = "Enter the name of a Pokémon";
+    if (document.getElementById('search').value == '') {
+        document.getElementById('search').value = "Enter the name of a Pokémon";
+    }
 }
 
+async function filterAndShowName() {
+    let filterWord = document.getElementById('search').value.replace(/\s/g, '').toLowerCase();
+    if (filterWord.length >= 3) {
+        wasSearching = true;
+        let pokemonContainersRef = document.getElementById('pokemon-containers');
+        pokemonContainersRef.innerHTML = '';
+        console.log(filterWord);
+        if (filterWord == "") {
+            await pokemonContanersRender(pokemonsList, 40);
+        }
+        else {
+            console.log(pokemonsList);
+            filteredData = pokemonsList.filter(name => name.name.includes(filterWord));
+            console.log(filteredData);
+            await pokemonContanersRender(filteredData, filteredData.length);
+        }
+    }
+    else {
+        if(wasSearching){
+        let pokemonContainersRef = document.getElementById('pokemon-containers');
+        pokemonContainersRef.innerHTML = '';
+        await pokemonContanersRender(pokemonsList, 40);
+        wasSearching = false;
+    }
+}
+}
 
-
-// TODO:
-// - Добавить поиск по имени покемона
