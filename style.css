@@ -1,78 +1,77 @@
-body{
+body {
     background-color: #FDFDFF;
     font-family: "Rubik", sans-serif;
 }
 
-h4{
-    color:  #3E4A5A;
+h4 {
+    color: #3E4A5A;
     margin: 0px;
     font-size: 18px;
 }
 
-header{
+header {
     font-size: 48px;
-    color:  #3E4A5A;
+    color: #3E4A5A;
     padding-left: 160px;
     padding-top: 48px;
 }
 
-main{
+main {
     padding-left: 160px;
     padding-right: 160px;
     margin-top: 24px;
 }
 
-main input{
+main input {
     height: 48px;
     width: 90%;
-    border: 1px solid  #AEB9C8;
+    border: 1px solid #AEB9C8;
     border-radius: 8px;
     background-color: #FFFFFF;
     color: #AEB9C8;
     font-size: 24px;
 }
 
-.tooltip-text{
+.tooltip-text {
     color: #AEB9C8;
-    margin: 0px; 
+    margin: 0px;
 }
 
-.tooltip-text-container{
+.tooltip-text-container {
     margin-top: 8px;
     height: 40px;
 }
 
-.content{
+.content {
     display: flex;
     justify-content: space-between;
 }
 
-.pokemon-containers{
+.pokemon-containers {
     display: flex;
     flex-wrap: wrap;
 }
 
-.pokemon-container{
-    flex:1;
+.pokemon-container {
+    flex: 1;
     max-width: 224px;
     height: 305px;
     margin-right: 24px;
     margin-bottom: 24px;
-    border: 1.5px solid  #AEB9C8;
+    border: 1.5px solid #AEB9C8;
     border-radius: 8px;
     background-color: #FFFFFF;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     display: flex;
     flex-direction: column;
     align-items: center;
-
 }
 
-.pokemon-container img{
+.pokemon-container img {
     height: 188px;
 }
 
-.pokemon-container-button{
+.pokemon-container-button {
     margin-top: 12px;
     margin-bottom: 16px;
     height: 38px;
@@ -84,31 +83,32 @@ main input{
     border-radius: 10px;
 }
 
-.pokemon-container-button:hover{
-    background-color:#98c2f8;
+.pokemon-container-button:hover {
+    background-color: #98c2f8;
     cursor: pointer;
 }
 
-.pokemon-container span{
+.pokemon-container span {
     margin-top: 8px;
-    color: #AEB9C8;;
+    color: #AEB9C8;
     font-size: 16px;
 }
 
-.pokemon-container-details-wrapper{
+.pokemon-container-details-wrapper {
     flex-grow: 1;
     min-width: 420px;
     display: flex;
     justify-content: end;
 }
 
-.pokemon-container-details{
+.pokemon-container-details {
     position: sticky;
     top: 10px;
     height: 600px;
     width: 100%;
+    min-width: 420px;
     max-width: 420px;
-    border: 1.5px solid  #AEB9C8;
+    border: 1.5px solid #AEB9C8;
     border-radius: 8px;
     background-color: #FFFFFF;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
@@ -117,17 +117,17 @@ main input{
     align-items: center;
 }
 
-.pokemon-container-details img{
+.pokemon-container-details img {
     width: 224px;
 }
 
-.pokemon-container-details span{
+.pokemon-container-details span {
     margin-top: 8px;
-    color: #AEB9C8;;
+    color: #AEB9C8;
     font-size: 16px;
 }
 
-.tab-bar{
+.tab-bar {
     margin-top: 16px;
     margin-bottom: 16px;
     display: flex;
@@ -137,7 +137,7 @@ main input{
     width: 80%;
 }
 
-.tab-active{
+.tab-active {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -148,12 +148,12 @@ main input{
     border-radius: 10px;
 }
 
-.tab{
+.tab {
     padding-left: 16px;
     padding-right: 16px;
 }
 
-.tab:hover{
+.tab:hover {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -165,7 +165,7 @@ main input{
     cursor: pointer;
 }
 
-.information-wrap{
+.information-wrap {
     flex: 1;
     display: flex;
     align-items: center;
@@ -173,58 +173,58 @@ main input{
     margin-bottom: 16px;
 }
 
-.information{
+.information {
     width: 100%;
 }
 
-.main-information{
+.main-information {
     width: 100%;
     display: flex;
     justify-content: space-between;
     padding: 0px;
 }
 
-.progress{
+.progress {
     width: 128px;
     height: 8px;
     border: 1px solid #3D77C3;
     border-radius: 16px;
     margin-top: 12px;
-    
+
 }
 
-.progress-bar{
+.progress-bar {
     height: 100%;
     max-width: 100%;
-    background-color:#3D77C3;
+    background-color: #3D77C3;
     color: #cee3ff;
     text-align: center;
     font-size: 8px;
 }
 
-.evolution_chain_container{
+.evolution_chain_container {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.evolution_chain_container img{
+.evolution_chain_container img {
     min-height: 80px;
     min-width: 80px;
 }
 
-.arrow{
-    color:#cee3ff;
+.arrow {
+    color: #cee3ff;
     height: 72px;
 }
 
-.load-more-button-container{
+.load-more-button-container {
     width: 100%;
     display: flex;
     justify-content: center;
 }
 
-.load-more-button{
+.load-more-button {
     margin-top: 12px;
     margin-bottom: 16px;
     height: 38px;
@@ -236,7 +236,7 @@ main input{
     border-radius: 10px;
 }
 
-.load-more-button:hover{
-    background-color:#98c2f8;
+.load-more-button:hover {
+    background-color: #98c2f8;
     cursor: pointer;
 }

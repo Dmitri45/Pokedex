@@ -1,20 +1,14 @@
 let loadedPokemonCount = 40;
 const BASE_URL = `https://pokeapi.co/api/v2/pokemon?limit=${loadedPokemonCount}&offset=0`;
 let myObject = null;
-let arrowHtml = `<svg class="arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" 
-stroke="currentColor" class="size-6">
-<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-</svg>`;
 let pokemonsList = [];
 let filteredData = [];
 let wasSearching = false;
-
 
 async function init() {
     await loadPokemons();
     await pokemonContanersRender(pokemonsList, loadedPokemonCount);
     setupFocusHandlers();
-
 }
 
 async function loadPokemons() {
@@ -42,26 +36,11 @@ async function pokemonContanersRender(listOfPokomens, quantity = listOfPokomens.
 function pokemonContainerRender(objectOfPokemon, urlOfPokemon) {
     let pokemonContainersRef = document.getElementById('pokemon-containers');
     if (objectOfPokemon.sprites.other['official-artwork'].front_default) {
-        pokemonContainersRef.innerHTML += ` 
-        <div class="pokemon-container">
-        <img src="${objectOfPokemon.sprites.other['official-artwork'].front_default}" alt="">
-        <h4>${objectOfPokemon.name[0].toUpperCase() + objectOfPokemon.name.slice(1)}</h4>
-        <span>${getPokemonType(objectOfPokemon)}</span>
-        <button onclick="pokemonContainerDetailsRender('${urlOfPokemon}')" class="pokemon-container-button">Learn more</button>
-        <div></div>
-    </div>`;
+        pokemonContainersRef.innerHTML += getPokemonContainerTemplate(objectOfPokemon, urlOfPokemon);
     }
     else {
-        pokemonContainersRef.innerHTML += ` 
-    <div class="pokemon-container">
-    <img src="./img/no_image.png" alt="">
-    <h4>${objectOfPokemon.name[0].toUpperCase() + objectOfPokemon.name.slice(1)}</h4>
-    <span>${getPokemonType(objectOfPokemon)}</span>
-    <button onclick="pokemonContainerDetailsRender('${urlOfPokemon}')" class="pokemon-container-button">Learn more</button>
-    <div></div>
-</div>`;
+        pokemonContainersRef.innerHTML += getDefaultPokemonContainerTemplate(objectOfPokemon, urlOfPokemon);
     }
-
 }
 
 function getPokemonType(myObject) {
@@ -75,22 +54,7 @@ function getPokemonType(myObject) {
 async function pokemonContainerDetailsRender(url) {
     await setSelectedPokemon(url);
     let pokemonContainerDetais = document.getElementById('pokemon-container-details');
-    pokemonContainerDetais.innerHTML = ` 
-        <img src="${myObject.sprites.other['official-artwork'].front_default}" alt="">
-        <h4>${myObject.name[0].toUpperCase() + myObject.name.slice(1)}</h4>
-        <span>${getPokemonType(myObject)}</span>
-        <div class="tab-bar">
-            <span id="main" class="tab tab-active" onclick="tabChange('main')">Main</span>
-            <span id="stats" class="tab" onclick="tabChange('stats')">Stats</span>
-            <span id="evo-chain" class="tab" onclick="tabChange('evo-chain')">Evo Chain</span>
-        </div>
-        <div class="information-wrap">
-        <div id="information" class="information">
-        </div>
-        </div>
-        <button onclick="closePokemondetails()" class="pokemon-container-button">Close</button>
-        <div></div>
-    </div>`;
+    pokemonContainerDetais.innerHTML = getPokemonContainerDetailsTemplate(myObject);
     pokemonMainInformationRender();
     showPokemonDetail();
 }
@@ -117,7 +81,6 @@ function tabChange(id) {
     else {
         pokemonEvoChainRender();
     }
-
 }
 
 function resetTabs() {
@@ -128,33 +91,13 @@ function resetTabs() {
 
 function pokemonMainInformationRender() {
     document.getElementById('information').innerHTML = '';
-    document.getElementById('information').innerHTML =
-        `<div class="main-information">
-            <span>Height</span><span>${myObject.height}</span>
-            </div>
-            <div class="main-information">
-                <span>Weight</span><span>${myObject.weight}</span>
-            </div>
-            <div class="main-information">
-                <span>Base esperience</span><span>${myObject.base_experience}</span>
-            </div>
-            <div class="main-information">
-                <span>Abilities</span><span>${getPokemonAbilities(myObject)}</span>
-            </div>`;
+    document.getElementById('information').innerHTML = getPokemonMainInformationTemplate(myObject);
 }
 
 function pokemonStatsRender() {
     document.getElementById('information').innerHTML = '';
     for (let index = 0; index < myObject.stats.length; index++) {
-        document.getElementById('information').innerHTML += `
-        <div class="main-information">
-        <span>${myObject.stats[index].stat.name[0].toUpperCase() + myObject.stats[index].stat.name.slice(1)}</span>
-        <div class="progress">
-            <div class="progress-bar" style="width:${myObject.stats[index].base_stat}%">
-            ${myObject.stats[index].base_stat}</div>
-        </div>
-    </div>`;
-
+        document.getElementById('information').innerHTML += getPokemonStatsTemplate(myObject, index);
     }
 }
 
@@ -163,7 +106,7 @@ async function pokemonEvoChainRender() {
     let evolutionChainObject = await findByUrl(speciesObject.evolution_chain.url);
     let pokemonImageUrlsList = await getPokemonImageUrls(evolutionChainObject);
     document.getElementById('information').innerHTML = '';
-    document.getElementById('information').innerHTML = `<div id="evolution_chain_container" class="evolution_chain_container"></div>`;
+    document.getElementById('information').innerHTML = getEvolutionChainContainerTemplate();
     for (let index = 0; index < pokemonImageUrlsList.length; index++) {
         if (pokemonImageUrlsList[index] == arrowHtml) {
             document.getElementById('evolution_chain_container').innerHTML += `
@@ -268,7 +211,5 @@ async function filterAndShowName() {
 }
 }
 
-// Zu erledigen:
-// - Untersuchen, warum bei einigen Pokémon das Hauptbild nicht angezeigt wird.
-//  - Untersuchen, warum die kleine  Containers groesser werden, wenn nurr weniige angezeigt werden
+
 
