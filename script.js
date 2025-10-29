@@ -36,7 +36,6 @@ async function pokemonContanersRender(listOfPokomens, quantity = listOfPokomens.
     for (let index = start; index < quantity; index++) {
         let objectOfPokemon = await findByUrl(listOfPokomens[index].url);
         pokemonContainerRender(objectOfPokemon, listOfPokomens[index].url);
-        console.log(listOfPokomens[index].name);
     }
 }
 
@@ -230,39 +229,47 @@ function setupFocusHandlers() {
 function onFocus() {
     if (document.getElementById('search').value == 'Enter the name of a Pokémon') {
         document.getElementById('search').value = "";
+        document.getElementById('load-more-button-container').style = 'display:none';
     }
 }
 
 function onBlur() {
     if (document.getElementById('search').value == '') {
         document.getElementById('search').value = "Enter the name of a Pokémon";
+        document.getElementById('load-more-button-container').style = '';
+        document.getElementById('tooltip-text').style = 'display:none';
     }
 }
 
 async function filterAndShowName() {
     let filterWord = document.getElementById('search').value.replace(/\s/g, '').toLowerCase();
     if (filterWord.length >= 3) {
+        document.getElementById('tooltip-text').style = 'display:none';
         wasSearching = true;
         let pokemonContainersRef = document.getElementById('pokemon-containers');
         pokemonContainersRef.innerHTML = '';
-        console.log(filterWord);
         if (filterWord == "") {
             await pokemonContanersRender(pokemonsList, 40);
         }
         else {
-            console.log(pokemonsList);
             filteredData = pokemonsList.filter(name => name.name.includes(filterWord));
-            console.log(filteredData);
             await pokemonContanersRender(filteredData, filteredData.length);
         }
     }
     else {
+        document.getElementById('tooltip-text').style = '';
         if(wasSearching){
         let pokemonContainersRef = document.getElementById('pokemon-containers');
         pokemonContainersRef.innerHTML = '';
         await pokemonContanersRender(pokemonsList, 40);
         wasSearching = false;
+
     }
 }
 }
+
+// Zu erledigen:
+// - Hinweis anzeigen, wenn weniger als drei Zeichen eingegeben werden ("Geben Sie mindestens 3 Buchstaben ein").
+// - Untersuchen, warum bei einigen Pokémon das Hauptbild nicht angezeigt wird.
+//  - Untersuchen, warum die kleine  Containers groesser werden, wenn nurr weniige angezeigt werden
 

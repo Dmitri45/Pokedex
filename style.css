@@ -30,7 +30,16 @@ main input{
     background-color: #FFFFFF;
     color: #AEB9C8;
     font-size: 24px;
-    margin-bottom: 48px;
+}
+
+.tooltip-text{
+    color: #AEB9C8;
+    margin: 0px; 
+}
+
+.tooltip-text-container{
+    margin-top: 8px;
+    height: 40px;
 }
 
 .content{
@@ -90,7 +99,6 @@ main input{
     flex-grow: 1;
     min-width: 420px;
 }
-
 
 .pokemon-container-details{
     position: sticky;
