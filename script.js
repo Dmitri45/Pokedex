@@ -269,7 +269,6 @@ async function filterAndShowName() {
 }
 
 // Zu erledigen:
-// - Hinweis anzeigen, wenn weniger als drei Zeichen eingegeben werden ("Geben Sie mindestens 3 Buchstaben ein").
 // - Untersuchen, warum bei einigen Pokémon das Hauptbild nicht angezeigt wird.
 //  - Untersuchen, warum die kleine  Containers groesser werden, wenn nurr weniige angezeigt werden
 

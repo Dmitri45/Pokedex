@@ -55,7 +55,7 @@ main input{
 .pokemon-container{
     flex:1;
     max-width: 224px;
-    height: auto;
+    height: 305px;
     margin-right: 24px;
     margin-bottom: 24px;
     border: 1.5px solid  #AEB9C8;
@@ -98,6 +98,8 @@ main input{
 .pokemon-container-details-wrapper{
     flex-grow: 1;
     min-width: 420px;
+    display: flex;
+    justify-content: end;
 }
 
 .pokemon-container-details{
@@ -105,6 +107,7 @@ main input{
     top: 10px;
     height: 600px;
     width: 100%;
+    max-width: 420px;
     border: 1.5px solid  #AEB9C8;
     border-radius: 8px;
     background-color: #FFFFFF;
