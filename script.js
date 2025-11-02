@@ -4,6 +4,26 @@ let myObject = null;
 let pokemonsList = [];
 let filteredData = [];
 let wasSearching = false;
+const typeColors = {
+    normal:   '#F5F5F5',
+    fire:     '#FCE4D6',
+    water:    '#D6EAF8',
+    electric: '#FCF3CF',
+    grass:    '#D5F5E3',
+    ice:      '#D6EAF8',
+    fighting: '#FADBD8',
+    poison:   '#E8DAEF',
+    ground:   '#FDEBD0',
+    flying:   '#EBF5FB',
+    psychic:  '#FDEDEC',
+    bug:      '#E9F7EF',
+    rock:     '#F9E79F',
+    ghost:    '#E8DAEF',
+    dragon:   '#EAF2F8',
+    dark:     '#EAECEE',
+    steel:    '#EBEDEF',
+    fairy:    '#FDEEF4'
+};
 
 async function init() {
     await loadPokemons();
@@ -34,9 +54,10 @@ async function pokemonContanersRender(listOfPokomens, quantity = listOfPokomens.
 }
 
 function pokemonContainerRender(objectOfPokemon, urlOfPokemon) {
+    let typeOfPokemon = getPokemonType(objectOfPokemon);
     let pokemonContainersRef = document.getElementById('pokemon-containers');
     if (objectOfPokemon.sprites.other['official-artwork'].front_default) {
-        pokemonContainersRef.innerHTML += getPokemonContainerTemplate(objectOfPokemon, urlOfPokemon);
+        pokemonContainersRef.innerHTML += getPokemonContainerTemplate(objectOfPokemon, urlOfPokemon, typeOfPokemon);
     }
     else {
         pokemonContainersRef.innerHTML += getDefaultPokemonContainerTemplate(objectOfPokemon, urlOfPokemon);
@@ -51,14 +72,20 @@ function getPokemonType(myObject) {
     return pokemonTypeList.join('/');
 }
 
+function getCardBackgroundColorByType(typeOfPokemon){
+    let typeOfPokemonList = typeOfPokemon.split('/');
+    console.log(typeColors[`${typeOfPokemonList[0].toLowerCase()}`]);
+    return typeColors[`${typeOfPokemonList[0].toLowerCase()}`]
+}
+
 async function pokemonContainerDetailsRender(url) {
     await setSelectedPokemon(url);
     let pokemonContainerDetais = document.getElementById('pokemon-container-details');
     pokemonContainerDetais.innerHTML = getPokemonContainerDetailsTemplate(myObject);
     pokemonMainInformationRender();
     showPokemonDetail();
+    toggleOverflowHidden();
 }
-
 
 function getPokemonAbilities(myObject) {
     let pokemonAbilitiesList = [];
@@ -211,5 +238,21 @@ async function filterAndShowName() {
 }
 }
 
+const dialogRef = document.getElementById('pokemon-container-details'); 
+function openDialog() {
+    toglleOverlay();
+    dialogRef.show();
+}
+
+function toglleOverlay(){
+    let overlayRef = document.getElementById('overlay');
+    overlayRef.classList.toggle('d_none');
+    toggleOverflowHidden();
+}
+
+function toggleOverflowHidden(){
+    let bodyRef = document.getElementById('body');
+    bodyRef.classList.toggle('no_scroll');
+}
 
 

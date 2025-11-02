@@ -13,7 +13,7 @@
     <script src="./templates.js"></script>
 </head>
 
-<body onload="init()">
+<body id="body" onload="init()">
     <header>Pokedex</header>
     <main>
         <input id="search" type="text" value="Enter the name of a Pokémon" autocomplete="off">
@@ -23,8 +23,9 @@
         <div class="content">
             <div id="pokemon-containers" class="pokemon-containers">
             </div>
-            <div class="pokemon-container-details-wrapper" style="display: none;">
-                <div id="pokemon-container-details" class="pokemon-container-details"></div>
+            <div id="overlay" class="overlay" onclick="toglleOverlay()" style="display: none;">
+                <dialog id="pokemon-container-details"  class="pokemon-container-details">
+                </dialog>
             </div>
         </div>
         <div id="load-more-button-container" class="load-more-button-container" onclick="loadMorePokemon ()">

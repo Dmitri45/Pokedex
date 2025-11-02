@@ -3,28 +3,28 @@ stroke="currentColor" class="size-6">
 <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
 </svg>`;
 
-function getPokemonContainerTemplate(objectOfPokemon, urlOfPokemon) {
-    return `<div class="pokemon-container">
+function getPokemonContainerTemplate(objectOfPokemon, urlOfPokemon, typeOfPokemon) {
+    return `<div class="pokemon-container" onclick="pokemonContainerDetailsRender('${urlOfPokemon}')"
+     style='background-color:${getCardBackgroundColorByType(typeOfPokemon)}'>
     <img src="${objectOfPokemon.sprites.other['official-artwork'].front_default}" alt="">
     <h4>${objectOfPokemon.name[0].toUpperCase() + objectOfPokemon.name.slice(1)}</h4>
-    <span>${getPokemonType(objectOfPokemon)}</span>
-    <button onclick="pokemonContainerDetailsRender('${urlOfPokemon}')" class="pokemon-container-button">Learn more</button>
+    <span>${typeOfPokemon}</span>
     <div></div>
 </div>`;
 }
 
 function getDefaultPokemonContainerTemplate(objectOfPokemon, urlOfPokemon) {
-    return ` <div class="pokemon-container">
+    return ` <div class="pokemon-container" onclick="pokemonContainerDetailsRender('${urlOfPokemon}')"
+     style='background-color:${getCardBackgroundColorByType(typeOfPokemon)}'>
     <img src="./img/no_image.png" alt="">
     <h4>${objectOfPokemon.name[0].toUpperCase() + objectOfPokemon.name.slice(1)}</h4>
     <span>${getPokemonType(objectOfPokemon)}</span>
-    <button onclick="pokemonContainerDetailsRender('${urlOfPokemon}')" class="pokemon-container-button">Learn more</button>
     <div></div>
 </div>`;
 }
 
 function getPokemonContainerDetailsTemplate(myObject) {
-    return ` <img src="${myObject.sprites.other['official-artwork'].front_default}" alt="">
+    return `<img src="${myObject.sprites.other['official-artwork'].front_default}">
         <h4>${myObject.name[0].toUpperCase() + myObject.name.slice(1)}</h4>
         <span>${getPokemonType(myObject)}</span>
         <div class="tab-bar">
