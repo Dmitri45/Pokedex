@@ -71,7 +71,8 @@ main input {
 
 .pokemon-container-button {
     margin-top: 12px;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
+    min-height: 38px;
     height: 38px;
     width: 80%;
     color: #3D77C3;
@@ -79,6 +80,7 @@ main input {
     background-color: #cee3ff;
     border: 0px;
     border-radius: 10px;
+
 }
 
 .pokemon-container-button:hover {
@@ -102,7 +104,7 @@ main input {
 .pokemon-container-details {
     top: 50%;
     transform: translate(0, -50%);
-    height: 600px;
+    height: 620px;
     width: 100%;
     padding: 4px;
     min-width: 420px;
@@ -179,6 +181,7 @@ main input {
     align-items: center;
     width: 80%;
     margin-bottom: 16px;
+    min-height: 160px;
 }
 
 .information {
@@ -224,6 +227,25 @@ main input {
 .arrow {
     color: #cee3ff;
     height: 72px;
+}
+
+.slider-arrow-container{
+    height: 48px;
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.slider-arrow{
+    color: #3D77C3;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #cee3ff;
+}
+
+.slider-arrow:hover{
+    background-color: #98c2f8;
+    cursor: pointer;
 }
 
 .load-more-button-container {

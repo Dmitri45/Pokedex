@@ -36,9 +36,43 @@ function getPokemonContainerDetailsTemplate(myObject) {
         <div id="information" class="information">
         </div>
         </div>
+        <div class='slider-arrow-container'>
+            <svg class ="slider-arrow" onclick="previousPokemonDetailsRender()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+            </svg>
+            <svg class="slider-arrow" onclick="nextPokemonDetailsRender()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" 
+            stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+        </div>
         <button onclick="closePokemondetails()" class="pokemon-container-button">Close</button>
-        <div></div>
     </div>`;
+}
+
+function getDefaultPokemonContainerDetailsTemplate(myObject){
+    return `<img src="./img/no_image.png">
+    <h4>${myObject.name[0].toUpperCase() + myObject.name.slice(1)}</h4>
+    <span>${getPokemonType(myObject)}</span>
+    <div class="tab-bar">
+        <span id="main" class="tab tab-active" onclick="tabChange('main')">Main</span>
+        <span id="stats" class="tab" onclick="tabChange('stats')">Stats</span>
+        <span id="evo-chain" class="tab" onclick="tabChange('evo-chain')">Evo Chain</span>
+    </div>
+    <div class="information-wrap">
+    <div id="information" class="information">
+    </div>
+    </div>
+    <div class='slider-arrow-container'>
+        <svg class ="slider-arrow" onclick="previousPokemonDetailsRender()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+        </svg>
+        <svg class="slider-arrow" onclick="nextPokemonDetailsRender()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" 
+        stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+        </svg>
+    </div>
+    <button onclick="closePokemondetails()" class="pokemon-container-button">Close</button>
+</div>`;
 }
 
 function getPokemonMainInformationTemplate(myObject) {

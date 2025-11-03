@@ -89,7 +89,12 @@ function getCardBackgroundColorByType(typeOfPokemon) {
 async function pokemonContainerDetailsRender(url) {
     await setSelectedPokemon(url);
     let pokemonContainerDetais = document.getElementById('pokemon-container-details');
-    pokemonContainerDetais.innerHTML = getPokemonContainerDetailsTemplate(myObject);
+    if (myObject.sprites.other['official-artwork'].front_default){
+        pokemonContainerDetais.innerHTML = getPokemonContainerDetailsTemplate(myObject); 
+    }
+    else{
+        pokemonContainerDetais.innerHTML = getDefaultPokemonContainerDetailsTemplate(myObject);
+    }
     pokemonMainInformationRender();
     showPokemonDetail();
     toggleOverflowHidden();
@@ -271,8 +276,30 @@ function showLoader() {
     anim.play();
 }
 
-function hideLoader(){
-    document.getElementById('loader').style.display= "none";
+function hideLoader() {
+    document.getElementById('loader').style.display = "none";
     document.getElementById('load-more-button-container').style = "";
     anim.stop();
+}
+
+function nextPokemonDetailsRender() {
+    let nameOfPokemon = myObject.name;
+    let indexOfPokemon = pokemonsList.findIndex(pokemon => pokemon.name == nameOfPokemon);
+    if (indexOfPokemon == pokemonsList.length - 1) {
+        pokemonContainerDetailsRender(pokemonsList[0].url);
+    }
+    else {
+        pokemonContainerDetailsRender(pokemonsList[indexOfPokemon + 1].url);
+    }
+}
+
+function previousPokemonDetailsRender() {
+    let nameOfPokemon = myObject.name;
+    let indexOfPokemon = pokemonsList.findIndex(pokemon => pokemon.name == nameOfPokemon);
+    if (indexOfPokemon == 0) {
+        pokemonContainerDetailsRender(pokemonsList[pokemonsList.length - 1].url);
+    }
+    else {
+        pokemonContainerDetailsRender(pokemonsList[indexOfPokemon - 1].url);
+    }
 }
