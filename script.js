@@ -5,25 +5,33 @@ let pokemonsList = [];
 let filteredData = [];
 let wasSearching = false;
 const typeColors = {
-    normal:   '#F5F5F5',
-    fire:     '#FCE4D6',
-    water:    '#D6EAF8',
+    normal: '#F5F5F5',
+    fire: '#FCE4D6',
+    water: '#D6EAF8',
     electric: '#FCF3CF',
-    grass:    '#D5F5E3',
-    ice:      '#D6EAF8',
+    grass: '#D5F5E3',
+    ice: '#D6EAF8',
     fighting: '#FADBD8',
-    poison:   '#E8DAEF',
-    ground:   '#FDEBD0',
-    flying:   '#EBF5FB',
-    psychic:  '#FDEDEC',
-    bug:      '#E9F7EF',
-    rock:     '#F9E79F',
-    ghost:    '#E8DAEF',
-    dragon:   '#EAF2F8',
-    dark:     '#EAECEE',
-    steel:    '#EBEDEF',
-    fairy:    '#FDEEF4'
+    poison: '#E8DAEF',
+    ground: '#FDEBD0',
+    flying: '#EBF5FB',
+    psychic: '#FDEDEC',
+    bug: '#E9F7EF',
+    rock: '#F9E79F',
+    ghost: '#E8DAEF',
+    dragon: '#EAF2F8',
+    dark: '#EAECEE',
+    steel: '#EBEDEF',
+    fairy: '#FDEEF4'
 };
+
+const anim = lottie.loadAnimation({
+    container: document.getElementById('loader'),
+    path: 'blue-loader.json',
+    renderer: 'svg',
+    loop: true,
+    autoplay: false,
+});
 
 async function init() {
     await loadPokemons();
@@ -72,7 +80,7 @@ function getPokemonType(myObject) {
     return pokemonTypeList.join('/');
 }
 
-function getCardBackgroundColorByType(typeOfPokemon){
+function getCardBackgroundColorByType(typeOfPokemon) {
     let typeOfPokemonList = typeOfPokemon.split('/');
     console.log(typeColors[`${typeOfPokemonList[0].toLowerCase()}`]);
     return typeColors[`${typeOfPokemonList[0].toLowerCase()}`]
@@ -183,10 +191,12 @@ function closePokemondetails() {
     document.getElementById('pokemon-container-details').parentElement.style.display = 'none';
 }
 
-function loadMorePokemon() {
+async function loadMorePokemon() {
     let start = loadedPokemonCount;
+    showLoader();
     loadedPokemonCount += 40;
-    pokemonContanersRender(pokemonsList, loadedPokemonCount, start);
+    await pokemonContanersRender(pokemonsList, loadedPokemonCount, start);
+    hideLoader();
 }
 
 function setupFocusHandlers() {
@@ -228,31 +238,41 @@ async function filterAndShowName() {
     }
     else {
         document.getElementById('tooltip-text').style = '';
-        if(wasSearching){
-        let pokemonContainersRef = document.getElementById('pokemon-containers');
-        pokemonContainersRef.innerHTML = '';
-        await pokemonContanersRender(pokemonsList, 40);
-        wasSearching = false;
+        if (wasSearching) {
+            let pokemonContainersRef = document.getElementById('pokemon-containers');
+            pokemonContainersRef.innerHTML = '';
+            await pokemonContanersRender(pokemonsList, 40);
+            wasSearching = false;
 
+        }
     }
 }
-}
 
-const dialogRef = document.getElementById('pokemon-container-details'); 
+const dialogRef = document.getElementById('pokemon-container-details');
 function openDialog() {
     toglleOverlay();
     dialogRef.show();
 }
 
-function toglleOverlay(){
+function toglleOverlay() {
     let overlayRef = document.getElementById('overlay');
     overlayRef.classList.toggle('d_none');
     toggleOverflowHidden();
 }
 
-function toggleOverflowHidden(){
+function toggleOverflowHidden() {
     let bodyRef = document.getElementById('body');
     bodyRef.classList.toggle('no_scroll');
 }
 
+function showLoader() {
+    document.getElementById('loader').style = "";
+    document.getElementById('load-more-button-container').style.display = "none";
+    anim.play();
+}
 
+function hideLoader(){
+    document.getElementById('loader').style.display= "none";
+    document.getElementById('load-more-button-container').style = "";
+    anim.stop();
+}

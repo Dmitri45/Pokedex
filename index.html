@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokedex</title>
     <script src="./templates.js"></script>
+    <script src="https://unpkg.com/lottie-web@latest/build/player/lottie.min.js"></script>
 </head>
 
 <body id="body" onload="init()">
@@ -30,6 +31,8 @@
         </div>
         <div id="load-more-button-container" class="load-more-button-container" onclick="loadMorePokemon ()">
             <button class="load-more-button">Load more</button>
+        </div>
+        <div id="loader" class="loader" style="display: none;">
         </div>
     </main>
 
