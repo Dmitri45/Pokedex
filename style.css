@@ -18,6 +18,13 @@ header {
     color: #3E4A5A;
     padding-left: 160px;
     padding-top: 48px;
+    display: flex;
+    align-items: center;
+}
+
+.logo{
+    height: 44px;
+    margin-right: 12px;
 }
 
 main {

@@ -307,11 +307,6 @@ function previousPokemonDetailsRender() {
 
 // TODO — verbleibende Aufgaben
 
-// Overlay
-// - Dafür sorgen, dass das Overlay beim Öffnen hinzugefügt und beim Schließen entfernt wird.
-// - Wenn das Overlay geöffnet ist, darf der Hintergrund sich nicht bewegen oder scrollen.
-// - Einen Klick-Handler hinzufügen, damit ein Klick auf das Overlay das Fenster schließt und nicht einfach die Seite bewegt.
-
 // Seitentitel und Logo
 // - Den Seitentitel überprüfen und anpassen, damit der Pokémon-Name oder der Projektname korrekt angezeigt wird.
 // - Das Seitenlogo oder Favicon überprüfen und hinzufügen.
