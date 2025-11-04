@@ -24,8 +24,8 @@
         <div class="content">
             <div id="pokemon-containers" class="pokemon-containers">
             </div>
-            <div id="overlay" class="overlay" onclick="toglleOverlay()" style="display: none;">
-                <dialog id="pokemon-container-details"  class="pokemon-container-details">
+            <div id="overlay" class="overlay d_none" onclick="closePokemondetails()">
+                <dialog id="pokemon-container-details"  class="pokemon-container-details" onclick="stopEventPropagation(event)">
                 </dialog>
             </div>
         </div>

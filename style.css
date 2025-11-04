@@ -1,3 +1,7 @@
+*{
+    user-select: none;
+}
+
 body {
     background-color: #FDFDFF;
     font-family: "Rubik", sans-serif;
@@ -30,6 +34,10 @@ main input {
     background-color: #FFFFFF;
     color: #AEB9C8;
     font-size: 24px;
+}
+
+.d_none{
+    display: none;
 }
 
 .tooltip-text {

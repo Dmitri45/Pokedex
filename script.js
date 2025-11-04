@@ -95,9 +95,11 @@ async function pokemonContainerDetailsRender(url) {
     else{
         pokemonContainerDetais.innerHTML = getDefaultPokemonContainerDetailsTemplate(myObject);
     }
+    if(document.getElementById('overlay').classList.contains('d_none')){
+        toggleOverlay();
+    }
     pokemonMainInformationRender();
     showPokemonDetail();
-    toggleOverflowHidden();
 }
 
 function getPokemonAbilities(myObject) {
@@ -194,6 +196,7 @@ function showPokemonDetail() {
 
 function closePokemondetails() {
     document.getElementById('pokemon-container-details').parentElement.style.display = 'none';
+    toggleOverlay();
 }
 
 async function loadMorePokemon() {
@@ -253,13 +256,7 @@ async function filterAndShowName() {
     }
 }
 
-const dialogRef = document.getElementById('pokemon-container-details');
-function openDialog() {
-    toglleOverlay();
-    dialogRef.show();
-}
-
-function toglleOverlay() {
+function toggleOverlay() {
     let overlayRef = document.getElementById('overlay');
     overlayRef.classList.toggle('d_none');
     toggleOverflowHidden();
@@ -280,6 +277,10 @@ function hideLoader() {
     document.getElementById('loader').style.display = "none";
     document.getElementById('load-more-button-container').style = "";
     anim.stop();
+}
+
+function stopEventPropagation(event) {
+    event.stopPropagation();
 }
 
 function nextPokemonDetailsRender() {
@@ -303,3 +304,18 @@ function previousPokemonDetailsRender() {
         pokemonContainerDetailsRender(pokemonsList[indexOfPokemon - 1].url);
     }
 }
+
+// TODO — verbleibende Aufgaben
+
+// Overlay
+// - Dafür sorgen, dass das Overlay beim Öffnen hinzugefügt und beim Schließen entfernt wird.
+// - Wenn das Overlay geöffnet ist, darf der Hintergrund sich nicht bewegen oder scrollen.
+// - Einen Klick-Handler hinzufügen, damit ein Klick auf das Overlay das Fenster schließt und nicht einfach die Seite bewegt.
+
+// Seitentitel und Logo
+// - Den Seitentitel überprüfen und anpassen, damit der Pokémon-Name oder der Projektname korrekt angezeigt wird.
+// - Das Seitenlogo oder Favicon überprüfen und hinzufügen.
+
+// Responsives Design
+// - Sicherstellen, dass die Seite responsiv ist und auf mobilen Geräten korrekt angezeigt wird.
+// - Überprüfen, dass die UI-Elemente nicht über den Bildschirmrand hinausragen und gut lesbar bleiben.
