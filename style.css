@@ -374,7 +374,7 @@ main input {
 
     header {
         font-size: 24px;
-        padding-left: 64px;
+        padding-left: 32px;
         padding-top: 32px;
     }
 
@@ -384,7 +384,7 @@ main input {
     }
 
     main {
-        padding-left: 32x;
+        padding-left: 32px;
         padding-right: 32px;
         margin-top: 20px;
         max-width: 100%;
@@ -600,3 +600,4 @@ main input {
         max-width: 1920px;
     }
 }
+
