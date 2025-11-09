@@ -305,11 +305,7 @@ function previousPokemonDetailsRender() {
     }
 }
 
-// TODO — verbleibende Aufgaben
-
-// Seitentitel und Logo
-// - Den Seitentitel überprüfen und anpassen, damit der Pokémon-Name oder der Projektname korrekt angezeigt wird.
-// - Das Seitenlogo oder Favicon überprüfen und hinzufügen.
+// TODO — verbleibende Aufgaben:
 
 // Responsives Design
 // - Sicherstellen, dass die Seite responsiv ist und auf mobilen Geräten korrekt angezeigt wird.
