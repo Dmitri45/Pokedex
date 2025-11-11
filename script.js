@@ -4,6 +4,7 @@ let myObject = null;
 let pokemonsList = [];
 let filteredData = [];
 let wasSearching = false;
+let startPokemonList = [];
 const typeColors = {
     normal: '#F5F5F5',
     fire: '#FCE4D6',
@@ -47,7 +48,7 @@ async function loadPokemons() {
 async function findByUrl(url) {
     try {
         const response = await fetch(url);
-        return await response.json();;
+        return await response.json();
     } catch (error) {
         console.error('Fehler', error);
         return null;
@@ -55,10 +56,12 @@ async function findByUrl(url) {
 }
 
 async function pokemonContanersRender(listOfPokomens, quantity = listOfPokomens.length, start = 0) {
+    showLoader();
     for (let index = start; index < quantity; index++) {
         let objectOfPokemon = await findByUrl(listOfPokomens[index].url);
         pokemonContainerRender(objectOfPokemon, listOfPokomens[index].url);
     }
+    hideLoader();
 }
 
 function pokemonContainerRender(objectOfPokemon, urlOfPokemon) {
@@ -68,7 +71,7 @@ function pokemonContainerRender(objectOfPokemon, urlOfPokemon) {
         pokemonContainersRef.innerHTML += getPokemonContainerTemplate(objectOfPokemon, urlOfPokemon, typeOfPokemon);
     }
     else {
-        pokemonContainersRef.innerHTML += getDefaultPokemonContainerTemplate(objectOfPokemon, urlOfPokemon);
+        pokemonContainersRef.innerHTML += getDefaultPokemonContainerTemplate(objectOfPokemon, urlOfPokemon, typeOfPokemon);
     }
 }
 
@@ -82,20 +85,19 @@ function getPokemonType(myObject) {
 
 function getCardBackgroundColorByType(typeOfPokemon) {
     let typeOfPokemonList = typeOfPokemon.split('/');
-    console.log(typeColors[`${typeOfPokemonList[0].toLowerCase()}`]);
-    return typeColors[`${typeOfPokemonList[0].toLowerCase()}`]
+    return typeColors[`${typeOfPokemonList[0].toLowerCase()}`];
 }
 
 async function pokemonContainerDetailsRender(url) {
     await setSelectedPokemon(url);
     let pokemonContainerDetais = document.getElementById('pokemon-container-details');
-    if (myObject.sprites.other['official-artwork'].front_default){
-        pokemonContainerDetais.innerHTML = getPokemonContainerDetailsTemplate(myObject); 
+    if (myObject.sprites.other['official-artwork'].front_default) {
+        pokemonContainerDetais.innerHTML = getPokemonContainerDetailsTemplate(myObject);
     }
-    else{
+    else {
         pokemonContainerDetais.innerHTML = getDefaultPokemonContainerDetailsTemplate(myObject);
     }
-    if(document.getElementById('overlay').classList.contains('d_none')){
+    if (document.getElementById('overlay').classList.contains('d_none')) {
         toggleOverlay();
     }
     pokemonMainInformationRender();
@@ -149,28 +151,47 @@ async function pokemonEvoChainRender() {
     let pokemonImageUrlsList = await getPokemonImageUrls(evolutionChainObject);
     document.getElementById('information').innerHTML = '';
     document.getElementById('information').innerHTML = getEvolutionChainContainerTemplate();
-    for (let index = 0; index < pokemonImageUrlsList.length; index++) {
-        if (pokemonImageUrlsList[index] == arrowHtml) {
-            document.getElementById('evolution_chain_container').innerHTML += `
+    renderEvolutionChain(pokemonImageUrlsList);
+}
+
+function renderEvolutionChain(pokemonImageUrlsList) {
+    if (pokemonImageUrlsList.length == 0) {
+        document.getElementById('evolution_chain_container').innerHTML = getNoEvolutionTemplate();
+    }
+    else {
+        for (let index = 0; index < pokemonImageUrlsList.length; index++) {
+            if (pokemonImageUrlsList[index] == arrowHtml) {
+                document.getElementById('evolution_chain_container').innerHTML += `
         ${pokemonImageUrlsList[index]}`;
-        }
-        else {
-            document.getElementById('evolution_chain_container').innerHTML += `
+            }
+            else {
+                document.getElementById('evolution_chain_container').innerHTML += `
         <img src="${pokemonImageUrlsList[index]}">`;
+            }
         }
     }
 }
 
 async function getPokemonImageUrls(evolutionChainObject) {
     let myList = [];
-    myList.push(await getPokemonImageUrlByName(evolutionChainObject.chain.species.name));
+    myList.push(await getPokemonImageUrlByName(evolutionChainObject?.chain?.species?.name));
     myList.push(arrowHtml);
-    myList.push(await getPokemonImageUrlByName(evolutionChainObject.chain.evolves_to[0].species.name));
+    myList.push(await getPokemonImageUrlByName(evolutionChainObject?.chain?.evolves_to[0]?.species?.name));
     if (evolutionChainObject?.chain?.evolves_to?.[0]?.evolves_to?.[0]?.species?.name) {
         myList.push(arrowHtml);
         myList.push(await getPokemonImageUrlByName(evolutionChainObject.chain.evolves_to[0].evolves_to[0].species.name));
     }
-    return myList;
+    return checkForFalsyValues(myList);
+}
+
+function checkForFalsyValues(myList) {
+    if (myList.some(item => item == false)) {
+        myList = [];
+        return myList;
+    }
+    else {
+        return myList;
+    }
 }
 
 async function getPokemonImageUrlByName(nameOfPokemon) {
@@ -182,8 +203,22 @@ async function getPokemonImageUrlByName(nameOfPokemon) {
             break;
         }
     }
-    let objectOfPokemon = await findByUrl(urlOfPokemon);
-    return objectOfPokemon.sprites.other['official-artwork'].front_default;
+    return await getPokemonImageIfValid(urlOfPokemon);
+}
+
+async function getPokemonImageIfValid(urlOfPokemon) {
+    if(urlOfPokemon){
+        let objectOfPokemon = await findByUrl(urlOfPokemon);
+        if (objectOfPokemon) {
+            return objectOfPokemon.sprites.other['official-artwork'].front_default;
+        }
+        else {
+            return false;
+        }
+    }
+    else {
+        return false;
+    }
 }
 
 async function setSelectedPokemon(url) {
@@ -201,17 +236,23 @@ function closePokemondetails() {
 
 async function loadMorePokemon() {
     let start = loadedPokemonCount;
-    showLoader();
     loadedPokemonCount += 40;
     await pokemonContanersRender(pokemonsList, loadedPokemonCount, start);
-    hideLoader();
 }
 
 function setupFocusHandlers() {
     let searchInput = document.getElementById('search');
     searchInput.addEventListener('focus', onFocus);
     searchInput.addEventListener('blur', onBlur);
-    searchInput.addEventListener('input', filterAndShowName);
+    searchInput.addEventListener('input', debounce(filterAndShowName, 300));
+}
+
+function debounce(fn, delay) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn.apply(this, args), delay);
+    };
 }
 
 function onFocus() {
@@ -274,9 +315,11 @@ function showLoader() {
 }
 
 function hideLoader() {
-    document.getElementById('loader').style.display = "none";
-    document.getElementById('load-more-button-container').style = "";
-    anim.stop();
+    setTimeout(() => {
+        document.getElementById('loader').style.display = "none";
+        document.getElementById('load-more-button-container').style = "";
+        anim.stop();
+    }, 300);
 }
 
 function stopEventPropagation(event) {

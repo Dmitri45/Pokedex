@@ -13,7 +13,7 @@ function getPokemonContainerTemplate(objectOfPokemon, urlOfPokemon, typeOfPokemo
 </div>`;
 }
 
-function getDefaultPokemonContainerTemplate(objectOfPokemon, urlOfPokemon) {
+function getDefaultPokemonContainerTemplate(objectOfPokemon, urlOfPokemon, typeOfPokemon) {
     return ` <div class="pokemon-container" onclick="pokemonContainerDetailsRender('${urlOfPokemon}')"
      style='background-color:${getCardBackgroundColorByType(typeOfPokemon)}'>
     <img src="./img/no_image.png" alt="">
@@ -102,6 +102,10 @@ function getPokemonStatsTemplate(myObject, index) {
 
 function getEvolutionChainContainerTemplate() {
     return `<div id="evolution_chain_container" class="evolution_chain_container"></div>`;
+}
+
+function getNoEvolutionTemplate(){
+    return `<div class="no-evolution-container">No evolution chain available.</div>`
 }
 
 
