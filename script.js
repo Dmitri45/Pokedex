@@ -35,11 +35,14 @@ const anim = lottie.loadAnimation({
 });
 
 async function init() {
+    showLoader();
     let pokemonData = await findByUrl('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0');
     pokemonsList = pokemonData.results;
     await addLoadedPokemons(0, loadedPokemonCount);
     setupFocusHandlers();
+    hideLoader();
     pokemonContanersRender(loadedPokemonsList);
+
 }
 
 async function addLoadedPokemons(start = 0, loadedPokemonCount) {
@@ -244,6 +247,7 @@ function closePokemondetails() {
 async function loadMorePokemon() {
     let start = loadedPokemonCount;
     loadedPokemonCount += 40;
+    showLoader();
     await addLoadedPokemons(start, loadedPokemonCount);
     pokemonContanersRender(loadedPokemonsList, loadedPokemonCount, start);
 }
@@ -306,11 +310,11 @@ async function filterAndShowName() {
 }
 
 function updateButtonVisibility() {
-    let loadMoreButtenContainerRef = document.getElementById('load-more-button-container');
+    let loadMoreButtenRef = document.getElementById('load-more-button');
     if (wasSearching) {
-        loadMoreButtenContainerRef.style.display = 'none'; 
+        loadMoreButtenRef.style.display = 'none';
     } else {
-        loadMoreButtenContainerRef.style = '';
+        loadMoreButtenRef.style = '';
     }
 }
 
@@ -338,6 +342,10 @@ function toggleOverflowHidden() {
 
 function showLoader() {
     document.getElementById('loader').style = "";
+    document.getElementById('load-more-button').style.display = "none";
+    if(wasSearching){
+        document.getElementById('pokemon-containers').style.display = 'none';
+    }
     anim.play();
 }
 
@@ -345,7 +353,11 @@ function hideLoader() {
     setTimeout(() => {
         document.getElementById('loader').style.display = "none";
         anim.stop();
-    }, 300);
+        if (wasSearching == false) {
+            document.getElementById('load-more-button').style.display = "";
+        }
+        document.getElementById('pokemon-containers').style.display = '';
+    }, 400);
 }
 
 function stopEventPropagation(event) {
@@ -387,7 +399,7 @@ function previousPokemonDetailsRender() {
             pokemonContainerDetailsRender(loadedPokemonsList[indexOfPokemon - 1].urlOfPokemon);
         }
     }
-    else{
+    else {
         let indexOfPokemon = searchResults.findIndex(pokemon => pokemon.objectOfPokemon.name == nameOfPokemon);
         if (indexOfPokemon == 0) {
             pokemonContainerDetailsRender(searchResults[searchResults.length - 1].urlOfPokemon);

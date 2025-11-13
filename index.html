@@ -17,31 +17,34 @@
 
 <body id="body" onload="init()">
     <div class="body-inner">
-    <header>
-        <img class="logo" src="./img/logo.png">
-        Pokedex</header>
-    <main>
-        <input id="search" type="text" value="Enter the name of a Pokémon" autocomplete="off">
-        <div class="tooltip-text-container">
-            <p id="tooltip-text" class="tooltip-text" style="display: none;">Enter at least three letters</p>
-        </div>
-        <div class="content">
-            <div id="pokemon-containers" class="pokemon-containers">
+        <header>
+            <img class="logo" src="./img/logo.png">
+            Pokedex
+        </header>
+        <main>
+            <input id="search" type="text" value="Enter the name of a Pokémon" autocomplete="off">
+            <div class="tooltip-text-container">
+                <p id="tooltip-text" class="tooltip-text" style="display: none;">Enter at least three letters</p>
             </div>
-            <div id="overlay" class="overlay d_none" onclick="closePokemondetails()">
-                <dialog id="pokemon-container-details"  class="pokemon-container-details" onclick="stopEventPropagation(event)">
-                </dialog>
+            <div class="content">
+                <div id="pokemon-containers" class="pokemon-containers">
+                </div>
+                <div id="overlay" class="overlay d_none" onclick="closePokemondetails()">
+                    <dialog id="pokemon-container-details" class="pokemon-container-details"
+                        onclick="stopEventPropagation(event)">
+                    </dialog>
+                </div>
             </div>
-        </div>
-        <div id="load-more-button-container" class="load-more-button-container" onclick="loadMorePokemon ()">
-            <button class="load-more-button">Load more</button>
-        </div>
-        <div id="loader" class="loader" style="display: none;">
-        </div>
+            <div id="load-more-button-container" class="load-more-button-container" onclick="loadMorePokemon ()">
+                <button id="load-more-button" class="load-more-button">Load more</button>
+                <div id="loader" class="loader" style="display: none;">
+                </div>
+            </div>
+    </div>
     </main>
 
     <footer></footer>
-</div>
+    </div>
 </body>
 <script src="./script.js"></script>
 
