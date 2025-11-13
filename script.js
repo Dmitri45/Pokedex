@@ -1,10 +1,11 @@
 let loadedPokemonCount = 40;
-const BASE_URL = `https://pokeapi.co/api/v2/pokemon?limit=${loadedPokemonCount}&offset=0`;
+let loadedPokemonsList = [];
 let myObject = null;
 let pokemonsList = [];
 let filteredData = [];
 let wasSearching = false;
 let startPokemonList = [];
+const BASE_URL = `https://pokeapi.co/api/v2/pokemon?limit=${loadedPokemonCount}&offset=0`;
 const typeColors = {
     normal: '#F5F5F5',
     fire: '#FCE4D6',
@@ -35,14 +36,22 @@ const anim = lottie.loadAnimation({
 });
 
 async function init() {
-    await loadPokemons();
-    await pokemonContanersRender(pokemonsList, loadedPokemonCount);
-    setupFocusHandlers();
-}
-
-async function loadPokemons() {
     let pokemonData = await findByUrl('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0');
     pokemonsList = pokemonData.results;
+    await addLoadedPokemons(0, loadedPokemonCount);
+    setupFocusHandlers();
+    pokemonContanersRender(loadedPokemonsList);
+}
+
+async function addLoadedPokemons(start = 0, loadedPokemonCount) {
+    for (let index = start; index < loadedPokemonCount; index++) {
+        let objectOfPokemon = await findByUrl(pokemonsList[index].url);
+        loadedPokemonsList.push({
+            'objectOfPokemon': objectOfPokemon,
+            'urlOfPokemon': pokemonsList[index].url
+        });
+    }
+    console.log(loadedPokemonsList);
 }
 
 async function findByUrl(url) {
@@ -55,11 +64,10 @@ async function findByUrl(url) {
     }
 }
 
-async function pokemonContanersRender(listOfPokomens, quantity = listOfPokomens.length, start = 0) {
+function pokemonContanersRender(listOfPokomens, quantity = listOfPokomens.length, start = 0) {
     showLoader();
-    for (let index = start; index < quantity; index++) {
-        let objectOfPokemon = await findByUrl(listOfPokomens[index].url);
-        pokemonContainerRender(objectOfPokemon, listOfPokomens[index].url);
+    for (let index = start; index < quantity; index++) {   
+        pokemonContainerRender(listOfPokomens[index].objectOfPokemon ,listOfPokomens[index].urlOfPokemon);
     }
     hideLoader();
 }
@@ -237,7 +245,8 @@ function closePokemondetails() {
 async function loadMorePokemon() {
     let start = loadedPokemonCount;
     loadedPokemonCount += 40;
-    await pokemonContanersRender(pokemonsList, loadedPokemonCount, start);
+    await addLoadedPokemons(start, loadedPokemonCount);
+    pokemonContanersRender(loadedPokemonsList, loadedPokemonCount, start);
 }
 
 function setupFocusHandlers() {
@@ -347,9 +356,3 @@ function previousPokemonDetailsRender() {
         pokemonContainerDetailsRender(pokemonsList[indexOfPokemon - 1].url);
     }
 }
-
-// TODO — verbleibende Aufgaben:
-
-// Responsives Design
-// - Sicherstellen, dass die Seite responsiv ist und auf mobilen Geräten korrekt angezeigt wird.
-// - Überprüfen, dass die UI-Elemente nicht über den Bildschirmrand hinausragen und gut lesbar bleiben.
