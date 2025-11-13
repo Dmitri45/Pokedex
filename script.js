@@ -5,26 +5,6 @@ let pokemonsList = [];
 let searchResults = [];
 let wasSearching = false;
 const BASE_URL = `https://pokeapi.co/api/v2/pokemon?limit=${loadedPokemonCount}&offset=0`;
-const typeColors = {
-    normal: '#F5F5F5',
-    fire: '#FCE4D6',
-    water: '#D6EAF8',
-    electric: '#FCF3CF',
-    grass: '#D5F5E3',
-    ice: '#D6EAF8',
-    fighting: '#FADBD8',
-    poison: '#E8DAEF',
-    ground: '#FDEBD0',
-    flying: '#EBF5FB',
-    psychic: '#FDEDEC',
-    bug: '#E9F7EF',
-    rock: '#F9E79F',
-    ghost: '#E8DAEF',
-    dragon: '#EAF2F8',
-    dark: '#EAECEE',
-    steel: '#EBEDEF',
-    fairy: '#FDEEF4'
-};
 
 const anim = lottie.loadAnimation({
     container: document.getElementById('loader'),
@@ -95,7 +75,7 @@ function getPokemonType(myObject) {
 
 function getCardBackgroundColorByType(typeOfPokemon) {
     let typeOfPokemonList = typeOfPokemon.split('/');
-    return typeColors[`${typeOfPokemonList[0].toLowerCase()}`];
+    return typeOfPokemonList[0].toLowerCase();
 }
 
 async function pokemonContainerDetailsRender(url) {

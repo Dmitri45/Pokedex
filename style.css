@@ -42,7 +42,7 @@ main {
 
 main input {
     height: 48px;
-    min-width: 90%;
+    min-width: 100%;
     border: 1px solid #AEB9C8;
     border-radius: 8px;
     background-color: #FFFFFF;
@@ -310,6 +310,78 @@ main input {
     justify-content: center;
     color: #AEB9C8;
     font-size: 16px;
+}
+
+.normal {
+    background-color: #F5F5F5;
+}
+
+.fire {
+    background-color: #FCE4D6;
+}
+
+.water {
+    background-color: #D6EAF8;
+}
+
+.electric {
+    background-color: #FCF3CF;
+}
+
+.grass {
+    background-color: #D5F5E3;
+}
+
+.ice {
+    background-color: #D6EAF8;
+}
+
+.fighting {
+    background-color: #FADBD8;
+}
+
+.poison {
+    background-color: #E8DAEF;
+}
+
+.ground {
+    background-color: #FDEBD0;
+}
+
+.flying {
+    background-color: #EBF5FB;
+}
+
+.psychic {
+    background-color: #FDEDEC;
+}
+
+.bug {
+    background-color: #E9F7EF;
+}
+
+.rock {
+    background-color: #F9E79F;
+}
+
+.ghost {
+    background-color: #E8DAEF;
+}
+
+.dragon {
+    background-color: #EAF2F8;
+}
+
+.dark {
+    background-color: #EAECEE;
+}
+
+.steel {
+    background-color: #EBEDEF;
+}
+
+.fairy {
+    background-color: #FDEEF4;
 }
 
 @media(max-width:780px) {
