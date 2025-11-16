@@ -25,15 +25,16 @@ async function init() {
 
 }
 
-async function addLoadedPokemons(start = 0, loadedPokemonCount) {
-    for (let index = start; index < loadedPokemonCount; index++) {
-        let objectOfPokemon = await findByUrl(pokemonsList[index].url);
+async function addLoadedPokemons(start = 0, end = loadedPokemonCount) {
+    const slice = pokemonsList.slice(start, end);
+    const promises = slice.map(pokemon => findByUrl(pokemon.url));
+    const results = await Promise.all(promises);
+    results.forEach((objectOfPokemon, i) => {
         loadedPokemonsList.push({
             'objectOfPokemon': objectOfPokemon,
-            'urlOfPokemon': pokemonsList[index].url
+            'urlOfPokemon': slice[i].url
         });
-    }
-    console.log(loadedPokemonsList);
+    });
 }
 
 async function findByUrl(url) {
@@ -46,27 +47,24 @@ async function findByUrl(url) {
     }
 }
 
-function pokemonContanersRender(listOfPokomens, quantity = listOfPokomens.length, start = 0) {
+function pokemonContanersRender(listOfPokemons, quantity = listOfPokemons.length, start = 0) {
     showLoader();
+    const pokemonContainersRef = document.getElementById('pokemon-containers');
+    let html = pokemonContainersRef.innerHTML;
     for (let index = start; index < quantity; index++) {
-        pokemonContainerRender(listOfPokomens[index].objectOfPokemon, listOfPokomens[index].urlOfPokemon);
+        const { objectOfPokemon, urlOfPokemon } = listOfPokemons[index];
+        const typeOfPokemon = getPokemonType(objectOfPokemon);          
+        const hasArtwork = objectOfPokemon.sprites.other['official-artwork'].front_default;
+        html += hasArtwork                                                             
+            ? getPokemonContainerTemplate(objectOfPokemon, urlOfPokemon, typeOfPokemon)
+            : getDefaultPokemonContainerTemplate(objectOfPokemon, urlOfPokemon, typeOfPokemon);
     }
+    pokemonContainersRef.innerHTML = html;
     hideLoader();
 }
 
-function pokemonContainerRender(objectOfPokemon, urlOfPokemon) {
-    let typeOfPokemon = getPokemonType(objectOfPokemon);
-    let pokemonContainersRef = document.getElementById('pokemon-containers');
-    if (objectOfPokemon.sprites.other['official-artwork'].front_default) {
-        pokemonContainersRef.innerHTML += getPokemonContainerTemplate(objectOfPokemon, urlOfPokemon, typeOfPokemon);
-    }
-    else {
-        pokemonContainersRef.innerHTML += getDefaultPokemonContainerTemplate(objectOfPokemon, urlOfPokemon, typeOfPokemon);
-    }
-}
-
 function getPokemonType(myObject) {
-    let pokemonTypeList = [];
+    const pokemonTypeList = [];
     for (let index = 0; index < myObject.types.length; index++) {
         pokemonTypeList.push(myObject.types[index].type.name[0].toUpperCase() + myObject.types[index].type.name.slice(1));
     }
@@ -136,9 +134,9 @@ function pokemonStatsRender() {
 }
 
 async function pokemonEvoChainRender() {
-    let speciesObject = await findByUrl(myObject.species.url);
-    let evolutionChainObject = await findByUrl(speciesObject.evolution_chain.url);
-    let pokemonImageUrlsList = await getPokemonImageUrls(evolutionChainObject);
+    const speciesObject = await findByUrl(myObject.species.url);
+    const evolutionChainObject = await findByUrl(speciesObject.evolution_chain.url);
+    const pokemonImageUrlsList = await getPokemonImageUrls(evolutionChainObject);
     document.getElementById('information').innerHTML = '';
     document.getElementById('information').innerHTML = getEvolutionChainContainerTemplate();
     renderEvolutionChain(pokemonImageUrlsList);
@@ -163,7 +161,7 @@ function renderEvolutionChain(pokemonImageUrlsList) {
 }
 
 async function getPokemonImageUrls(evolutionChainObject) {
-    let myList = [];
+    const myList = [];
     myList.push(await getPokemonImageUrlByName(evolutionChainObject?.chain?.species?.name));
     myList.push(arrowHtml);
     myList.push(await getPokemonImageUrlByName(evolutionChainObject?.chain?.evolves_to[0]?.species?.name));
@@ -284,13 +282,15 @@ async function filterAndShowName() {
             pokemonContainersRef.innerHTML = '';
             pokemonContanersRender(loadedPokemonsList);
             wasSearching = false;
-            updateButtonVisibility();
+            setTimeout(() => {
+                updateButtonVisibility();
+            }, 400);
         }
     }
 }
 
 function updateButtonVisibility() {
-    let loadMoreButtenRef = document.getElementById('load-more-button');
+    const loadMoreButtenRef = document.getElementById('load-more-button');
     if (wasSearching) {
         loadMoreButtenRef.style.display = 'none';
     } else {
@@ -323,7 +323,7 @@ function toggleOverflowHidden() {
 function showLoader() {
     document.getElementById('loader').style = "";
     document.getElementById('load-more-button').style.display = "none";
-    if(wasSearching){
+    if (wasSearching) {
         document.getElementById('pokemon-containers').style.display = 'none';
     }
     anim.play();
